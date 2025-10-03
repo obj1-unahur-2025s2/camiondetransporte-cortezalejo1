@@ -1,0 +1,227 @@
+import seres.*
+import territorios.*
+
+
+
+describe "Test de territorio y seres ESCENARIO INICIAL" {
+const silvano = new Silvano()
+const hobbit = new Hobbit()
+const herrero = new Herrero()
+const territorio = new Territorio()
+
+	method initialize(){
+		hobbit.hacerFiesta()
+		territorio.agregarSer(silvano)
+		territorio.agregarSer(hobbit)
+		territorio.agregarSer(herrero)
+	}
+	
+	test "hobbit hace fiesta y los amigos aumentan a 45"{
+		assert.equals(45, hobbit.amigos())
+	}
+	
+	test "hobbit hace fiesta y las historias aumentan a 11"{
+		assert.equals(11, hobbit.historias())
+	}
+	
+	test "el territorio tiene 3 seres"{
+		assert.equals(3,territorio.seres().size())
+	}
+	
+	test "habilidad del silvano es 580"{
+		assert.equals(580, silvano.habilidad())
+	}
+	
+	test "habilidad del hobbit es 1100"{
+		assert.equals(1100, hobbit.habilidad())
+	}
+	
+	test "habilidad del herrero es 300"{
+		assert.equals(300, herrero.habilidad())
+	}
+	test "el hobbit debe tener 45 amigos"{
+		assert.equals(45, hobbit.amigos())
+	}
+	
+	test "el hobbit es torpe"{
+		assert.that(hobbit.inmortalidad())
+	}
+	
+	test "promedio de habilidad del territorio es 660"{
+		assert.equals(660, territorio.habilidadPromedio())
+	}
+	
+	test "valor máximo de habilidad entre todos los seres inmortales debe ser 1100"{
+		assert.equals(1100, territorio.habilidadMaxima())
+	}
+	
+	test "los seres torpes del territorio son el elfo y el enano"{
+		assert.equals(#{silvano,herrero}, territorio.seresTorpes())
+	}
+	
+	test "existe un ser mortal en el territorio"{
+		assert.that(territorio.hayMortal())
+	}
+	
+}
+
+describe "Test de territorio y seres ESCENARIO LUEGO DE TORNEO"{
+const silvano = new Silvano()
+const hobbit = new Hobbit()
+const herrero = new Herrero()
+const territorio = new Territorio()
+
+	method initialize(){
+		hobbit.hacerFiesta()
+		territorio.agregarSer(silvano)
+		territorio.agregarSer(hobbit)
+		territorio.agregarSer(herrero)
+		territorio.torneo()
+	}
+	
+	test "el elfo debe saber 40 canciones"{
+		assert.equals(40, silvano.canciones())
+	}
+	
+	test "el hobbit ahora debe tener 53 amigos"{
+		assert.equals(53,hobbit.amigos())
+	}
+	
+	test "la ira del enano debe subir a 500"{
+		assert.equals(500, herrero.ira())
+	}
+	
+	test "habilidad del elfo sigue siendo 580"{
+		assert.equals(580, silvano.habilidad())
+	}
+	
+	
+	test "habilidad del hobbit sigue siendo 1100"{
+		assert.equals(1100, hobbit.habilidad())
+	}
+	
+	test "habilidad del enano pasa a 400"{ //da 400
+		assert.equals(400, herrero.habilidad())
+	}
+	
+	test "siguen siendo torpes el elfo y el enano"{
+		assert.equals(#{silvano,herrero},territorio.seresTorpes())
+	}
+	
+}
+
+describe "Test de territorio y seres ESCENARIO LUEGO DE EPIFANIA"{
+const silvano = new Silvano()
+const hobbit = new Hobbit()
+const herrero = new Herrero()
+const territorio = new Territorio()
+
+	method initialize(){
+		hobbit.hacerFiesta()
+		territorio.agregarSer(silvano)
+		territorio.agregarSer(hobbit)
+		territorio.agregarSer(herrero)
+		territorio.torneo()
+		territorio.epifania()
+	}
+	
+	test "elfo ahora debe saber 80 canciones"{
+		assert.equals(80, silvano.canciones())
+	}
+	
+	test "el elfo habilidad debe pasar a 640"{
+		assert.equals(640, silvano.habilidad())
+	}
+	
+	test "cantidad de amigos del hobbit deben ser igual que antes"{
+		assert.equals(53, hobbit.amigos())
+	}
+	
+	test "la ira del enano debe ser 800"{
+		assert.equals(800, herrero.ira())
+	}
+}
+
+
+describe "Test de los agregados sobre Territorio"{
+	const silvano = new Silvano()
+	const hobbit = new Hobbit()
+	const herrero = new Herrero()
+	const territorio = new Territorio()
+
+	method initialize(){
+		hobbit.hacerFiesta()
+		territorio.agregarSer(silvano)
+		territorio.agregarSer(hobbit)
+		territorio.agregarSer(herrero)
+	}
+	
+	test "el capitan es el hobbit"{
+		assert.equals(hobbit, territorio.capitan())
+	}
+	
+	test "somnolencia hace que el elfo olvide 10 canciones"{
+		territorio.somnolencia()
+		assert.equals(10, silvano.canciones())
+	}
+	test "somnolencia hace que el hobbit pierda 3 amigos"{
+		territorio.somnolencia()
+		assert.equals(42, hobbit.amigos())
+	}
+	test "somnolencia hace que el enano baje su ira 50 unidades"{
+		territorio.somnolencia()
+		assert.equals(150, herrero.ira())
+	}
+	
+	test "el territorio está en PAZ"{
+		assert.that(territorio.enPaz())
+	}
+	
+	test "consumo hace que baje 3 lembas"{
+		territorio.consumirRecursos()
+		assert.equals(7, territorio.lembas())
+	}
+	
+	test "consumo hace que baje 4 tabacos"{
+		territorio.consumirRecursos()
+		assert.equals(6, territorio.tabaco())
+	}
+	
+	test "consumo hace que silvano aprenda 15 canciones mas"{
+		territorio.consumirRecursos()
+		assert.equals(20+15, silvano.canciones())
+	}
+	test "consumo hace que hobbit gana 7 amigos mas"{
+		territorio.consumirRecursos()
+		assert.equals(45+7, hobbit.amigos())
+	}
+	test "consumo hace que hobbit escucho 7 historias mas"{
+		territorio.consumirRecursos()
+		assert.equals(11+7, hobbit.historias())
+	}
+
+describe "test partes nuevas de los enanos"{
+	//const furioso = new Furioso()
+	const minero = new Minero()
+	
+	test "minero construye un escondite cuando gana experiencia"{
+		minero.adquirirExp()
+		assert.equals(1, minero.escondites().size())
+	}
+	
+	test "sueño profundo con 3 escondites, el valor total de los escondites es 38*3"{
+		minero.adquirirExp()
+		minero.adquirirExp()
+		minero.adquirirExp()
+		minero.suenioProfundo()
+		assert.equals(38*3,minero.escondites().sum({e=>e.valor()})
+	}
+	
+	test "ira da 200+300+35"{
+		minero.adquirirExp()
+		assert.equals(535, minero.ira())
+		}
+
+}
+
+}
